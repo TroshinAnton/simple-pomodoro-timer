@@ -19,7 +19,7 @@
       },
       {
         "command": "pomodoro.togglePause",
-        "title": "Pomodoro: поставить на паузу"
+        "title": "Pomodoro: поставить на паузу / продолжить"
       },
       {
         "command": "pomodoro.deactivatePomodoro",
