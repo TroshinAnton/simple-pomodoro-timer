@@ -4,12 +4,9 @@ export function activate(context: vscode.ExtensionContext) {
     const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
     context.subscriptions.push(statusBarItem);
 
-    /*const workDuration = 25*60;
+    const workDuration = 25*60;
     const shortBreakDuration = 5*60;
-    const longBreakDuration = 30*60;*/
-    const workDuration = 2;
-    const shortBreakDuration = 1;
-    const longBreakDuration = 3;
+    const longBreakDuration = 30*60;
 
     let remainingTime = workDuration;
     let timer: NodeJS.Timeout | undefined;
