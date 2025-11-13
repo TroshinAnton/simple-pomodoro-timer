@@ -4,9 +4,12 @@ export function activate(context: vscode.ExtensionContext) {
     const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
     context.subscriptions.push(statusBarItem);
 
-    const workDuration = 25*60;
+    /*const workDuration = 25*60;
     const shortBreakDuration = 5*60;
-    const longBreakDuration = 30*60;
+    const longBreakDuration = 30*60;*/
+    const workDuration = 2;
+    const shortBreakDuration = 1;
+    const longBreakDuration = 3;
 
     let remainingTime = workDuration;
     let timer: NodeJS.Timeout | undefined;
@@ -14,6 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
     let cycleCount = 0;
     let inBreak = false;
     let longBreakMode = false;
+    let completedWorkSessions = 0;
 
     function updateStatusBar() {
         const minutes = Math.floor(remainingTime / 60);
@@ -42,8 +46,9 @@ export function activate(context: vscode.ExtensionContext) {
                 inBreak = false;
                 remainingTime = workDuration;
             } else {
+                completedWorkSessions++;
                 inBreak = true;
-                if (cycleCount >= 4) {
+                if (cycleCount >= 3) {
                     longBreakMode = true;
                     remainingTime = longBreakDuration;
                 } else {
@@ -79,6 +84,8 @@ export function activate(context: vscode.ExtensionContext) {
         inBreak = false;
         longBreakMode = false;
         remainingTime = workDuration;
+        completedWorkSessions = 0;
+        vscode.window.showInformationMessage('Запущено расширение Pomodoro');
         startTimer();
     });
 
@@ -90,7 +97,7 @@ export function activate(context: vscode.ExtensionContext) {
 			clearInterval(timer);
 		}
 		statusBarItem.hide();
-		vscode.window.showInformationMessage('Совершен выход из расширения Pomodoro');
+		vscode.window.showInformationMessage(`Совершен выход из расширения Pomodoro. Рабочих сессий: ${completedWorkSessions}`);
 	});
 	context.subscriptions.push(deactivateCommand);
 }
