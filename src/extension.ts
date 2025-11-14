@@ -17,6 +17,11 @@ export function activate(context: vscode.ExtensionContext) {
     let completedWorkSessions = 0;
 
     function updateStatusBar() {
+        /*
+        Функция обновления статус-бара: 
+        + Формирование надписи для статус-бара.
+        + Обновление с помощью VS Code API с помощью statusBarItem.show()
+        */
         const minutes = Math.floor(remainingTime / 60);
         const seconds = remainingTime % 60;
         const modeText = inBreak ? (longBreakMode ? 'Длинный перерыв' : 'Перерыв'): 'Работа';
@@ -29,6 +34,11 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     function startTimer() {
+        /* 
+        Функция запуска таймера и обработки времени:
+        + Ежесекундное вычисление текущего временного интервала и перехода к следующему.
+        + Обновление статус-бара с помощью updateStatusBar().
+        */
         if (timer) {
             clearInterval(timer);
         }
@@ -72,11 +82,21 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     function togglePause() {
+        /* 
+        Функция активации паузы / возобновления:
+        + Инвертирование isPaused
+        + Обновление статус-бара с помощью updateStatusBar().
+        */
         isPaused = !isPaused;
         updateStatusBar();
     }
 
     const startCommand = vscode.commands.registerCommand('pomodoro.startPomodoro', () => {
+        /* 
+        Команда: запуск расширения
+        + Зануление и установка стандартных значений рабочим переменым
+        + Вывод уведомления о запуске
+        */
         cycleCount = 0;
         inBreak = false;
         longBreakMode = false;
@@ -90,6 +110,12 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(startCommand, pauseCommand);
 
 	const deactivateCommand = vscode.commands.registerCommand('pomodoro.deactivatePomodoro', () => {
+        /* 
+        Команда: выход из расширения
+        + Зануление таймера
+        + Скрытие статус-бара
+        + Вывод завершающего уведомления
+        */
 		if (timer) {
 			clearInterval(timer);
 		}
